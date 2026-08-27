@@ -1987,7 +1987,7 @@
               <h3>RETO ABIERTO vs Ciampa</h3>
               <p>
                 Miguel Ledezma vs Tomasso Ciampa por el titulo de USA -
-                SmackDown - 26 de Junio de 2025
+                SmackDown - 26 de Junio de 2023
               </p>
             </div>
           </article>
@@ -3163,30 +3163,52 @@
             wikiObserver.observe(c);
           });
         }
+      })();
+    </script>
 
-        // Videos: al hacer clic en la miniatura, la cambia por el
-        // reproductor de YouTube y lo pone a reproducir automáticamente.
+    <!-- Reproductor de video (independiente del script de arriba a propósito,
+         para que funcione aunque algo más falle en el resto de la página) -->
+    <script>
+      (function () {
         // Acepta el link completo pegado en data-yt-url, en cualquiera de
         // estos formatos: youtube.com/watch?v=ID, youtu.be/ID,
-        // youtube.com/embed/ID o youtube.com/shorts/ID (sirve también con
-        // videos "no listados", que solo necesitan el link para cargar).
+        // youtube.com/embed/ID, m.youtube.com/watch?v=ID o
+        // youtube.com/shorts/ID (sirve también con videos "no listados",
+        // que solo necesitan el link para cargar, no que sean públicos).
         function extraerYoutubeId(url) {
+          if (!url) return null;
+          url = url.trim();
           var match = url.match(
-            /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/,
+            /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([\w-]{11})/,
           );
-          return match ? match[1] : null;
+          if (match) return match[1];
+          // Respaldo: si el link trae "v=ID" en cualquier otra parte de la URL
+          var fallback = url.match(/[?&]v=([\w-]{11})/);
+          return fallback ? fallback[1] : null;
         }
-        document.querySelectorAll(".video-thumb").forEach(function (btn) {
+
+        var thumbs = document.querySelectorAll(".video-thumb");
+        console.log("Miniaturas de video encontradas:", thumbs.length);
+
+        thumbs.forEach(function (btn) {
           btn.addEventListener("click", function () {
             var ytUrl = btn.dataset.ytUrl || "";
             var ytId = extraerYoutubeId(ytUrl);
+
             if (!ytId) {
-              console.warn("Link de YouTube no válido en:", btn);
+              console.warn(
+                'No pude sacar el ID de YouTube de este link: "' +
+                  ytUrl +
+                  '". Revisa que data-yt-url tenga el link completo y correcto.',
+              );
               return;
             }
+
             var iframe = document.createElement("iframe");
             iframe.src =
-              "https://www.youtube.com/embed/" + ytId + "?autoplay=1";
+              "https://www.youtube.com/embed/" +
+              ytId +
+              "?autoplay=1&modestbranding=1&rel=0";
             iframe.title = btn.getAttribute("aria-label") || "Video de YouTube";
             iframe.loading = "lazy";
             iframe.allow =
