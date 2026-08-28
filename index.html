@@ -841,6 +841,81 @@
         max-width: 44ch;
       }
 
+      /* ---------- Acordeón por mes (agrupa los videos) ---------- */
+      .month-groups {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .month-group {
+        border: 1px solid var(--line);
+        background: var(--ink);
+      }
+      .month-group__summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 20px clamp(20px, 4vw, 30px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .month-group__summary::-webkit-details-marker {
+        display: none;
+      }
+      .month-group__summary:hover {
+        background: rgba(184, 144, 60, 0.06);
+      }
+      .month-group__name {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+      }
+      .month-group__name h3 {
+        font-size: clamp(20px, 2.6vw, 26px);
+        color: var(--bone);
+      }
+      .month-group__count {
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        color: var(--bone-dim);
+        white-space: nowrap;
+      }
+      .month-group__toggle {
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--gold-bright);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .month-group__toggle::after {
+        content: "▾";
+        display: inline-block;
+        transition: transform 0.2s;
+      }
+      .month-group[open] .month-group__toggle::after {
+        transform: rotate(180deg);
+      }
+      .month-group[open] .month-group__toggle-label::after {
+        content: "Cerrar";
+      }
+      .month-group__toggle-label::after {
+        content: "Ver videos";
+      }
+      .month-group__body {
+        border-top: 1px solid var(--line);
+        padding: 18px clamp(20px, 4vw, 30px) 20px;
+      }
+      .month-group .videos {
+        margin-top: 0;
+      }
+
       /* ---------- Gallery ---------- */
       .gallery {
         display: grid;
@@ -1674,7 +1749,7 @@
                 terminar su combate ante Kit Wilson, origen de varios ataques
                 posteriores entre ambos. Tras varias semanas de roces
                 —incluyendo un ataque con mesa el 26 de septiembre— defiende
-                exitosamente ante Williams en Backlash (21 de septiembre).
+                exitosamente ante Williams en Payback (21 de septiembre).
               </p>
               <p>
                 Sin embargo, termina perdiendo el título ante él en un Extreme
@@ -1736,10 +1811,13 @@
     </section>
 
     <!-- ============ VIDEOS ============
-     Recorrido en video por la carrera. Cada tarjeta muestra tu imagen de
-     portada (Imagenes/N.png, igual que antes) y, al hacer clic, carga el
-     video de YouTube correspondiente (funciona igual con videos "no
-     listados", solo necesitan el link). Para activarlos:
+     Recorrido en video por la carrera, agrupado por mes en acordeones
+     (<details class="month-group">) que abren y cierran. Cada tarjeta
+     dentro muestra tu imagen de portada (Imagenes/N.png) y, al hacer clic,
+     carga el video de YouTube correspondiente (funciona igual con videos
+     "no listados", solo necesitan el link).
+
+     PARA ACTIVAR UN VIDEO:
        1. Sube tu video a YouTube como "oculto/no listado".
        2. Copia el link completo del video (el que te da el botón
           "Compartir", o directamente de la barra de direcciones).
@@ -1747,1117 +1825,1245 @@
           data-yt-url="https://www.youtube.com/watch?v=VIDEO_ID_1"
           -> data-yt-url="https://www.youtube.com/watch?v=ABC123xyz89"
           (también funciona si pegas un link corto tipo youtu.be/ABC123xyz89)
-     Puedes agregar o quitar tarjetas .video-card según cuántos videos tengas. -->
+
+     PARA AGREGAR UN VIDEO NUEVO a un mes que ya existe: copia un bloque
+     completo <article class="video-card">...</article> y pégalo dentro
+     del <div class="videos"> de ese mes, actualiza el número de video
+     (.month-group__count) a mano.
+
+     PARA AGREGAR UN MES NUEVO: copia un bloque completo
+     <details class="month-group">...</details> entero (con su <summary>
+     y su <div class="videos">), pégalo al final de <div class="month-groups">
+     y cambia el nombre del mes, el conteo de videos y las tarjetas de
+     adentro. Solo el primer acordeón trae el atributo "open" para que
+     aparezca desplegado de entrada; los demás no lo llevan. -->
     <section class="section--paper" id="videos">
       <div class="wrap">
         <p class="eyebrow">Recorrido</p>
         <h2 class="title">Su carrera, en video</h2>
-        <div class="videos">
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=KGQwfySKOvw"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/1.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 MAYO 2023</p>
-              <h3>Debut en WWE</h3>
-              <p>
-                Miguel Ledezma vs Humberto Carrillo - Smackdown - 5 de Mayo de
-                2023
-              </p>
-            </div>
-          </article>
+        <div class="month-groups">
+          <details class="month-group" open>
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Mayo 2023</h3>
+                <span class="month-group__count">6 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=KGQwfySKOvw"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/1.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 MAYO 2023</p>
+                <h3>Debut en WWE</h3>
+                <p>
+                  Miguel Ledezma vs Humberto Carrillo - Smackdown - 5 de Mayo de
+                  2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=bZPhiTvGGH4"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/2.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">7 MAYO 2023</p>
-              <h3>Handicap Match</h3>
-              <p>
-                Miguel Ledezma vs Humberto Carrillo Y Angel Garza - Backlash - 7
-                de Mayo de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=bZPhiTvGGH4"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/2.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">7 MAYO 2023</p>
+                <h3>Handicap Match</h3>
+                <p>
+                  Miguel Ledezma vs Humberto Carrillo Y Angel Garza - Backlash - 7
+                  de Mayo de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=aUNmrAs4OHo"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/3.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 MAYO 2023</p>
-              <h3>
-                Fatal 4 Way (Semifinal Torneo retador #1 por el titulo de USA)
-              </h3>
-              <p>
-                Miguel Ledezma vs Carmello Hayes vs Baron Corbin vs Robert Roode
-                - SmackDown - 12 de Mayo de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=aUNmrAs4OHo"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/3.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 MAYO 2023</p>
+                <h3>
+                  Fatal 4 Way (Semifinal Torneo retador #1 por el titulo de USA)
+                </h3>
+                <p>
+                  Miguel Ledezma vs Carmello Hayes vs Baron Corbin vs Robert Roode
+                  - SmackDown - 12 de Mayo de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=gUjoOikg5b8"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/4.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 MAYO 2023</p>
-              <h3>
-                Triple Treat (Final Torneo Retador #1 por el titulo de USA)
-              </h3>
-              <p>
-                Miguel Ledezma vs Shinsuke Nakamura vs Sami Zayn - SmackDown -
-                19 de Mayo de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=gUjoOikg5b8"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/4.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 MAYO 2023</p>
+                <h3>
+                  Triple Treat (Final Torneo Retador #1 por el titulo de USA)
+                </h3>
+                <p>
+                  Miguel Ledezma vs Shinsuke Nakamura vs Sami Zayn - SmackDown -
+                  19 de Mayo de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=bnLRweF_Xqw"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/5.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">21 MAYO 2023</p>
-              <h3>Lucha por el titulo de USA (Night Of Champions)</h3>
-              <p>
-                Miguel Ledezma vs Logan Paul por el titulo de USA - Night of
-                Champions - 21 de Mayo de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=bnLRweF_Xqw"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/5.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">21 MAYO 2023</p>
+                <h3>Lucha por el titulo de USA (Night Of Champions)</h3>
+                <p>
+                  Miguel Ledezma vs Logan Paul por el titulo de USA - Night of
+                  Champions - 21 de Mayo de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=vBREuwOEnnA"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/6.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=vBREuwOEnnA"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/6.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 MAYO 2023</p>
+                <h3>Lucha vs Logan Paul (Ataque al referí al final)</h3>
+                <p>
+                  Miguel Ledezma vs Logan Paul - SmackDown - 26 de Mayo de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 MAYO 2023</p>
-              <h3>Lucha vs Logan Paul (Ataque al referí al final)</h3>
-              <p>
-                Miguel Ledezma vs Logan Paul - SmackDown - 26 de Mayo de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=TR6tI8BumTA"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/7.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 JUNIO 2023</p>
-              <h3>Lucha vs Shinsuke Nakamura (Ataque de Logan Paul)</h3>
-              <p>Miguel Ledezma vs Nakamura - SmackDown - 5 de Junio de 2023</p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Junio 2023</h3>
+                <span class="month-group__count">5 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=TR6tI8BumTA"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/7.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 JUNIO 2023</p>
+                <h3>Lucha vs Shinsuke Nakamura (Ataque de Logan Paul)</h3>
+                <p>Miguel Ledezma vs Nakamura - SmackDown - 5 de Junio de 2023</p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=IiV7XlyNfeg"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/8.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 JUNIO 2023</p>
-              <h3>Ataque contra Logan Paul</h3>
-              <p>Ledezma contra Logan - SmackDown - 12 de Junio de 2023</p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=IiV7XlyNfeg"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/8.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 JUNIO 2023</p>
+                <h3>Ataque contra Logan Paul</h3>
+                <p>Ledezma contra Logan - SmackDown - 12 de Junio de 2023</p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=YlMwZKlORAE"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/9.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">14 JUNIO 2023</p>
-              <h3>Lucha por el titulo de USA (Judgment Day)</h3>
-              <p>
-                Miguel Ledezma vs Logan Paul por el titulo de USA - Judgment Day
-                - 14 de Junio de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=YlMwZKlORAE"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/9.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">14 JUNIO 2023</p>
+                <h3>Lucha por el titulo de USA (Judgment Day)</h3>
+                <p>
+                  Miguel Ledezma vs Logan Paul por el titulo de USA - Judgment Day
+                  - 14 de Junio de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=KsHD4H-cYKY"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/10.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 JUNIO 2023</p>
-              <h3>RETO ABIERTO vs Gargano</h3>
-              <p>
-                Miguel Ledezma vs Johnny Gargano por el titulo de USA -
-                SmackDown - 19 de Junio de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=KsHD4H-cYKY"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/10.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 JUNIO 2023</p>
+                <h3>RETO ABIERTO vs Gargano</h3>
+                <p>
+                  Miguel Ledezma vs Johnny Gargano por el titulo de USA -
+                  SmackDown - 19 de Junio de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=XN9Th87wbNw"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/11.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=XN9Th87wbNw"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/11.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 JUNIO 2023</p>
+                <h3>RETO ABIERTO vs Ciampa</h3>
+                <p>
+                  Miguel Ledezma vs Tomasso Ciampa por el titulo de USA -
+                  SmackDown - 26 de Junio de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 JUNIO 2023</p>
-              <h3>RETO ABIERTO vs Ciampa</h3>
-              <p>
-                Miguel Ledezma vs Tomasso Ciampa por el titulo de USA -
-                SmackDown - 26 de Junio de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=ZaZRjpUOHwc"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/12.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 JULIO 2023</p>
-              <h3>Lucha vs LA Knight (Falta de respeto previa)</h3>
-              <p>Miguel Ledezma vs LA Knight - SmackDown -5 de Julio de 2023</p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Julio 2023</h3>
+                <span class="month-group__count">5 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=ZaZRjpUOHwc"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/12.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 JULIO 2023</p>
+                <h3>Lucha vs LA Knight (Falta de respeto previa)</h3>
+                <p>Miguel Ledezma vs LA Knight - SmackDown -5 de Julio de 2023</p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=Za_JXJA2pnU"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/13.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">7 JULIO 2023</p>
-              <h3>Lucha por el titulo de USA (Money In The Bank)</h3>
-              <p>
-                Miguel Ledezma vs LA Knight por el titulo de USA - Money In The
-                Bank - 7 de Julio de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=Za_JXJA2pnU"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/13.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">7 JULIO 2023</p>
+                <h3>Lucha por el titulo de USA (Money In The Bank)</h3>
+                <p>
+                  Miguel Ledezma vs LA Knight por el titulo de USA - Money In The
+                  Bank - 7 de Julio de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=HCVpMyD_Woo"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/14.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 JULIO 2023</p>
-              <h3>Lucha vs Sami Zayn (Careo con Sheamus)</h3>
-              <p>
-                Miguel Ledezma vs Sami Zayn - SmackDown - 12 de Julio de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=HCVpMyD_Woo"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/14.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 JULIO 2023</p>
+                <h3>Lucha vs Sami Zayn (Careo con Sheamus)</h3>
+                <p>
+                  Miguel Ledezma vs Sami Zayn - SmackDown - 12 de Julio de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=Oqn9jW5D-zg"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/15.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 JULIO 2023</p>
-              <h3>Lucha vs Roode (Intervencion de Sheamus)</h3>
-              <p>
-                Miguel Ledezma vs Robert Roode No DQ - SmackDown - 19 de Julio
-                de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=Oqn9jW5D-zg"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/15.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 JULIO 2023</p>
+                <h3>Lucha vs Roode (Intervencion de Sheamus)</h3>
+                <p>
+                  Miguel Ledezma vs Robert Roode No DQ - SmackDown - 19 de Julio
+                  de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=q1XCYsGEwNw"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/16.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=q1XCYsGEwNw"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/16.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 JULIO 2023</p>
+                <h3>Lucha vs Sheamus (Puñetazo tramposo al final)</h3>
+                <p>Miguel Ledezma vs Sheamus - SmackDown - 26 de Julio de 2023</p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 JULIO 2023</p>
-              <h3>Lucha vs Sheamus (Puñetazo tramposo al final)</h3>
-              <p>Miguel Ledezma vs Sheamus - SmackDown - 26 de Julio de 2023</p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=a2svP42qPKs"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/17.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 AGOSTO 2023</p>
-              <h3>Lucha vs Apollo Crews (Ataque de Sheamus)</h3>
-              <p>
-                Miguel Ledezma vs Apollo Crews - SmackDown - 5 de Agosto de 2023
-              </p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Agosto 2023</h3>
+                <span class="month-group__count">6 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=a2svP42qPKs"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/17.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 AGOSTO 2023</p>
+                <h3>Lucha vs Apollo Crews (Ataque de Sheamus)</h3>
+                <p>
+                  Miguel Ledezma vs Apollo Crews - SmackDown - 5 de Agosto de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=Ednokxqo9sg"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/18.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">7 AGOSTO 2023</p>
-              <h3>Lucha por el titulo de USA (SummerSlam)</h3>
-              <p>
-                Miguel Ledezma vs Sheamus por el titulo de USA - SummerSlam - 7
-                de Agosto de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=Ednokxqo9sg"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/18.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">7 AGOSTO 2023</p>
+                <h3>Lucha por el titulo de USA (SummerSlam)</h3>
+                <p>
+                  Miguel Ledezma vs Sheamus por el titulo de USA - SummerSlam - 7
+                  de Agosto de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=SipIcj05lD4"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/19.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 AGOSTO 2023</p>
-              <h3>Manager de Liv Morgan vs Isla Dawn c/ Sheamus</h3>
-              <p>
-                Liv Morgan c/Ledezma vs Isla Dawn c/Sheamus - SmackDown - 12 de
-                Agosto de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=SipIcj05lD4"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/19.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 AGOSTO 2023</p>
+                <h3>Manager de Liv Morgan vs Isla Dawn c/ Sheamus</h3>
+                <p>
+                  Liv Morgan c/Ledezma vs Isla Dawn c/Sheamus - SmackDown - 12 de
+                  Agosto de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=-mHFAIR8jhM"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/20.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 AGOSTO 2023</p>
-              <h3>Cuartos de Final Torneo Mixto vs Gargano y LeRae</h3>
-              <p>
-                Miguel Ledezma y Liv Morgan vs Johnny Gargano y Candice Lerae -
-                SmackDown - 19 de Agosto de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=-mHFAIR8jhM"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/20.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 AGOSTO 2023</p>
+                <h3>Cuartos de Final Torneo Mixto vs Gargano y LeRae</h3>
+                <p>
+                  Miguel Ledezma y Liv Morgan vs Johnny Gargano y Candice Lerae -
+                  SmackDown - 19 de Agosto de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=tCfY3i5eBaw"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/21.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 AGOSTO 2023</p>
-              <h3>Semifinal Torneo Mixto vs Nakamura y Sky</h3>
-              <p>
-                Miguel Ledezma y Liv Morgan vs Shinsuke Nakamura y Iyo Sky -
-                SmackDown - 26 de Agosto de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=tCfY3i5eBaw"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/21.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 AGOSTO 2023</p>
+                <h3>Semifinal Torneo Mixto vs Nakamura y Sky</h3>
+                <p>
+                  Miguel Ledezma y Liv Morgan vs Shinsuke Nakamura y Iyo Sky -
+                  SmackDown - 26 de Agosto de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=ZegdNbQ0NL8"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/22.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=ZegdNbQ0NL8"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/22.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">28 AGOSTO 2023</p>
+                <h3>Final Torneo Mixto vs Dominik y Ripley</h3>
+                <p>
+                  Miguel Ledezma y Liv Morgan vs Dominik Mysterio y Rhea Ripley -
+                  King Of The Ring - 26 de Agosto de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">28 AGOSTO 2023</p>
-              <h3>Final Torneo Mixto vs Dominik y Ripley</h3>
-              <p>
-                Miguel Ledezma y Liv Morgan vs Dominik Mysterio y Rhea Ripley -
-                King Of The Ring - 26 de Agosto de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=rLwJVAQfGQA"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/23.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 SEPTIEMBRE 2023</p>
-              <h3>RETO ABIERTO vs Sikoa</h3>
-              <p>
-                Miguel Ledezma c/Liv Morgan vs Solo Sikoa por el titulo de USA -
-                SmackDown - 5 de Septiembre de 2023
-              </p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Septiembre 2023</h3>
+                <span class="month-group__count">5 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=rLwJVAQfGQA"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/23.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 SEPTIEMBRE 2023</p>
+                <h3>RETO ABIERTO vs Sikoa</h3>
+                <p>
+                  Miguel Ledezma c/Liv Morgan vs Solo Sikoa por el titulo de USA -
+                  SmackDown - 5 de Septiembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=gt7HESKwcsM"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/24.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 SEPTIEMBRE 2023</p>
-              <h3>Lucha vs Kit Wilson (Ataque de Williams)</h3>
-              <p>
-                Miguel Ledezma vs Kit Wilson - SmackDown - 12 de Septiembre de
-                2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=gt7HESKwcsM"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/24.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 SEPTIEMBRE 2023</p>
+                <h3>Lucha vs Kit Wilson (Ataque de Williams)</h3>
+                <p>
+                  Miguel Ledezma vs Kit Wilson - SmackDown - 12 de Septiembre de
+                  2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=CS-iS0xntQM"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/25.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 SEPTIEMBRE 2023</p>
-              <h3>Williams vs Corbin (Ataque de Ledezma)</h3>
-              <p>
-                Trick Williams vs Baron Corbin - SmackDown - 19 de Septiembre de
-                2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=CS-iS0xntQM"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/25.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 SEPTIEMBRE 2023</p>
+                <h3>Williams vs Corbin (Ataque de Ledezma)</h3>
+                <p>
+                  Trick Williams vs Baron Corbin - SmackDown - 19 de Septiembre de
+                  2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=pDiOvBq9tww"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/26.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">21 SEPTIEMBRE 2023</p>
-              <h3>Lucha por el titulo de USA (Backlash)</h3>
-              <p>
-                Miguel Ledezma c/Liv Morgan vs Trick Williams por el titulo de
-                USA - Backlash - 21 de Septiembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=pDiOvBq9tww"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/26.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">21 SEPTIEMBRE 2023</p>
+                <h3>Lucha por el titulo de USA (Payback)</h3>
+                <p>
+                  Miguel Ledezma c/Liv Morgan vs Trick Williams por el titulo de
+                  USA - Payback - 21 de Septiembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=flzES-5ZNCg"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/27.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=flzES-5ZNCg"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/27.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 SEPTIEMBRE 2023</p>
+                <h3>Lucha vs Trick Williams (Ataque con mesa)</h3>
+                <p>
+                  Miguel Ledezma vs Trick Williams - SmackDown - 26 de Septiembre
+                  de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 SEPTIEMBRE 2023</p>
-              <h3>Lucha vs Trick Williams (Ataque con mesa)</h3>
-              <p>
-                Miguel Ledezma vs Trick Williams - SmackDown - 26 de Septiembre
-                de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=adLN7bgvRjw"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/28.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 OCTUBRE 2023</p>
-              <h3>Lucha vs Dragon Lee (Ataque Final de Williams)</h3>
-              <p>
-                Miguel Ledezma vs Dragon Lee - SmackDown - 5 de Octubre de 2023
-              </p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Octubre 2023</h3>
+                <span class="month-group__count">6 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=adLN7bgvRjw"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/28.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 OCTUBRE 2023</p>
+                <h3>Lucha vs Dragon Lee (Ataque Final de Williams)</h3>
+                <p>
+                  Miguel Ledezma vs Dragon Lee - SmackDown - 5 de Octubre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=Ldj0DhVFptQ"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/29.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">7 OCTUBRE 2023</p>
-              <h3>Lucha por el titulo de USA (ECW One Night Stand)</h3>
-              <p>
-                Miguel Ledezma vs Trick Williams por el titulo de USA (Extreme
-                Rules Match) - ECW One Night Stand - 7 de Octubre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=Ldj0DhVFptQ"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/29.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">7 OCTUBRE 2023</p>
+                <h3>Lucha por el titulo de USA (ECW One Night Stand)</h3>
+                <p>
+                  Miguel Ledezma vs Trick Williams por el titulo de USA (Extreme
+                  Rules Match) - ECW One Night Stand - 7 de Octubre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=Ve4qnqZL_tY"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/30.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 OCTUBRE 2023</p>
-              <h3>Venganza por la espalda a Williams (Turn Heel?)</h3>
-              <p>
-                Miguel Ledezma vs Trick Williams - SmackDown - 12 de Octubre de
-                2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=Ve4qnqZL_tY"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/30.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 OCTUBRE 2023</p>
+                <h3>Venganza por la espalda a Williams (Turn Heel?)</h3>
+                <p>
+                  Miguel Ledezma vs Trick Williams - SmackDown - 12 de Octubre de
+                  2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=II4Y1Cmv6ag"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/31.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 OCTUBRE 2023</p>
-              <h3>Lucha vs Sami Zayn (Ataque de Williams)</h3>
-              <p>
-                Miguel Ledezma vs Sami Zayn - SmackDown - 19 de Octubre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=II4Y1Cmv6ag"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/31.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 OCTUBRE 2023</p>
+                <h3>Lucha vs Sami Zayn (Ataque de Williams)</h3>
+                <p>
+                  Miguel Ledezma vs Sami Zayn - SmackDown - 19 de Octubre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=G0mgBDVf7Q0"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/32.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 OCTUBRE 2023</p>
-              <h3>Williams vs Zayn (Interferencia de Ledezma)</h3>
-              <p>
-                Trick Williams vs Sami Zayn - SmackDown - 26 de Octubre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=G0mgBDVf7Q0"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/32.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 OCTUBRE 2023</p>
+                <h3>Williams vs Zayn (Interferencia de Ledezma)</h3>
+                <p>
+                  Trick Williams vs Sami Zayn - SmackDown - 26 de Octubre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=TRVD_1ZOPpo"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/33.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=TRVD_1ZOPpo"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/33.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">28 OCTUBRE 2023</p>
+                <h3>Lucha por el titulo de USA (Halloween Havoc)</h3>
+                <p>
+                  Trick Williams vs Sami Zayn vs Miguel Ledezma - Halloween Havoc
+                  - 28 de Octubre de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">28 OCTUBRE 2023</p>
-              <h3>Lucha por el titulo de USA (Halloween Havoc)</h3>
-              <p>
-                Trick Williams vs Sami Zayn vs Miguel Ledezma - Halloween Havoc
-                - 28 de Octubre de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=GhcbBsnrYqs"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/34.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 NOVIEMBRE 2023</p>
-              <h3>Lucha vs Strowman</h3>
-              <p>
-                Miguel Ledezma vs Braun Strowman - SmackDown - 5 de Noviembre de
-                2023
-              </p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Noviembre 2023</h3>
+                <span class="month-group__count">5 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=GhcbBsnrYqs"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/34.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 NOVIEMBRE 2023</p>
+                <h3>Lucha vs Strowman</h3>
+                <p>
+                  Miguel Ledezma vs Braun Strowman - SmackDown - 5 de Noviembre de
+                  2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=5A1nPp68RwA"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/35.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 NOVIEMBRE 2023</p>
-              <h3>Lucha vs Ricochet (Interferencia de Strowman)</h3>
-              <p>
-                Miguel Ledezma vs Ricochet - SmackDown - 12 de Noviembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=5A1nPp68RwA"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/35.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 NOVIEMBRE 2023</p>
+                <h3>Lucha vs Ricochet (Interferencia de Strowman)</h3>
+                <p>
+                  Miguel Ledezma vs Ricochet - SmackDown - 12 de Noviembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=cwNEhxcVTqs"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/36.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 NOVIEMBRE 2023</p>
-              <h3>
-                Lucha vs Strowman por el titulo de USA (Turn Heel definitivo)
-              </h3>
-              <p>
-                Miguel Ledezma c/Liv Morgan vs Braun Strowman por el titulo de
-                USA - SmackDown - 19 de Noviembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=cwNEhxcVTqs"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/36.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 NOVIEMBRE 2023</p>
+                <h3>
+                  Lucha vs Strowman por el titulo de USA (Turn Heel definitivo)
+                </h3>
+                <p>
+                  Miguel Ledezma c/Liv Morgan vs Braun Strowman por el titulo de
+                  USA - SmackDown - 19 de Noviembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=_qYTREbCuZg"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/37.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 NOVIEMBRE 2023</p>
-              <h3>Liv vs Becky (Contendiente #1 por el titulo de Divas)</h3>
-              <p>
-                Liv Morgan c/Miguel Ledezma vs Becky Lynch - SmackDown - 26 de
-                Noviembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=_qYTREbCuZg"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/37.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 NOVIEMBRE 2023</p>
+                <h3>Liv vs Becky (Contendiente #1 por el titulo de Divas)</h3>
+                <p>
+                  Liv Morgan c/Miguel Ledezma vs Becky Lynch - SmackDown - 26 de
+                  Noviembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=yzAvK-gsJdU"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/38.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=yzAvK-gsJdU"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/38.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">28 NOVIEMBRE 2023</p>
+                <h3>Lucha por el titulo de Divas (Survivor Series)</h3>
+                <p>
+                  Liv Morgan c/Miguel Ledezma vs Cora Jade por el titulo de Divas
+                  - Survivor Series - 28 de Noviembre de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">28 NOVIEMBRE 2023</p>
-              <h3>Lucha por el titulo de Divas (Survivor Series)</h3>
-              <p>
-                Liv Morgan c/Miguel Ledezma vs Cora Jade por el titulo de Divas
-                - Survivor Series - 28 de Noviembre de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=6UKbe0GcNmk"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/39.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 DICIEMBRE 2023</p>
-              <h3>Lucha Mixta vs Breakker y Jade</h3>
-              <p>
-                Miguel Ledezma y Liv Morgan vs Bron Breakker y Cora Jade -
-                SmackDown - 5 de Diciembre de 2023
-              </p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Diciembre 2023</h3>
+                <span class="month-group__count">6 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=6UKbe0GcNmk"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/39.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 DICIEMBRE 2023</p>
+                <h3>Lucha Mixta vs Breakker y Jade</h3>
+                <p>
+                  Miguel Ledezma y Liv Morgan vs Bron Breakker y Cora Jade -
+                  SmackDown - 5 de Diciembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=furPMqgkwMo"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/40.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 DICIEMBRE 2023</p>
-              <h3>Breakker vs Carlito (Intervencion de Ledezma)</h3>
-              <p>
-                Bron Breakker vs Carlito - SmackDown - 12 de Diciembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=furPMqgkwMo"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/40.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 DICIEMBRE 2023</p>
+                <h3>Breakker vs Carlito (Intervencion de Ledezma)</h3>
+                <p>
+                  Bron Breakker vs Carlito - SmackDown - 12 de Diciembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=vfx7LOeGjfg"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/41.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 DICIEMBRE 2023</p>
-              <h3>Lucha vs MVP (Ataque de Breakker)</h3>
-              <p>Miguel Ledezma vs MVP - SmackDown - 19 de Diciembre de 2023</p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=vfx7LOeGjfg"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/41.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 DICIEMBRE 2023</p>
+                <h3>Lucha vs MVP (Ataque de Breakker)</h3>
+                <p>Miguel Ledezma vs MVP - SmackDown - 19 de Diciembre de 2023</p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=j4modh5Y280"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/42.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">21 DICIEMBRE 2023</p>
-              <h3>Lucha por el titulo de Divas (Clash At The Castle)</h3>
-              <p>
-                Liv Morgan c/Miguel Ledezma vs Cora Jade - Clash At The Castle -
-                21 de Diciembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=j4modh5Y280"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/42.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">21 DICIEMBRE 2023</p>
+                <h3>Lucha por el titulo de Divas (Clash At The Castle)</h3>
+                <p>
+                  Liv Morgan c/Miguel Ledezma vs Cora Jade - Clash At The Castle -
+                  21 de Diciembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=FL67zLbCa28"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/43.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">21 DICIEMBRE 2023</p>
-              <h3>Lucha por el titulo de USA (Clash At The Castle) ★★★★★</h3>
-              <p>
-                Miguel Ledezma c/Liv Morgan vs Bron Breakker - Clash At The
-                Castle - 21 de Diciembre de 2023
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=FL67zLbCa28"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/43.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">21 DICIEMBRE 2023</p>
+                <h3>Lucha por el titulo de USA (Clash At The Castle) ★★★★★</h3>
+                <p>
+                  Miguel Ledezma c/Liv Morgan vs Bron Breakker - Clash At The
+                  Castle - 21 de Diciembre de 2023
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=5j2LYth4h1s"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/44.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=5j2LYth4h1s"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/44.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 DICIEMBRE 2023</p>
+                <h3>Promo Ledezma y Breakker</h3>
+                <p>
+                  Promo Miguel Ledezma vs Bron Breakker - SmackDown - 26 de
+                  Diciembre de 2023
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 DICIEMBRE 2023</p>
-              <h3>Promo Ledezma y Breakker</h3>
-              <p>
-                Promo Miguel Ledezma vs Bron Breakker - SmackDown - 26 de
-                Diciembre de 2023
-              </p>
-            </div>
-          </article>
+          </details>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=az6waKABm5c"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/45.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">5 ENERO 2024</p>
-              <h3>Lucha por el titulo de USA en la Steel Cage (Smackdown)</h3>
-              <p>
-                Miguel Ledezma vs Bron Breakker por el titulo de USA (Steel
-                Cage)- SmackDown - 5 de Enero de 2024
-              </p>
-            </div>
-          </article>
+          <details class="month-group">
+            <summary class="month-group__summary">
+              <div class="month-group__name">
+                <h3>Enero 2024</h3>
+                <span class="month-group__count">7 videos</span>
+              </div>
+              <span class="month-group__toggle"><span class="month-group__toggle-label"></span></span>
+            </summary>
+            <div class="month-group__body">
+              <div class="videos">
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=az6waKABm5c"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/45.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">5 ENERO 2024</p>
+                <h3>Lucha por el titulo de USA en la Steel Cage (Smackdown)</h3>
+                <p>
+                  Miguel Ledezma vs Bron Breakker por el titulo de USA (Steel
+                  Cage)- SmackDown - 5 de Enero de 2024
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=oLIGuq7zZbM"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/46.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">7 ENERO 2024</p>
-              <h3>
-                Lucha por el titulo de Divas con Ledezma de Arbitro Especial
-                (New Years Revolution)
-              </h3>
-              <p>
-                Liv Morgan vs Cora Jade por el titulo de Divas (Miguel Ledezma
-                de Arbitro Especial)- New Years Revolution - 7 de Enero de 2024
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=oLIGuq7zZbM"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/46.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">7 ENERO 2024</p>
+                <h3>
+                  Lucha por el titulo de Divas con Ledezma de Arbitro Especial
+                  (New Years Revolution)
+                </h3>
+                <p>
+                  Liv Morgan vs Cora Jade por el titulo de Divas (Miguel Ledezma
+                  de Arbitro Especial)- New Years Revolution - 7 de Enero de 2024
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=aRotiaN2yiI"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/47.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">12 ENERO 2024</p>
-              <h3>
-                Lucha vs Holland (Lucha Clasificatoria para el Royal Rumble)
-              </h3>
-              <p>
-                Miguel Ledezma c/Liv Morgan vs Ridge Holland c/Sheamus y Butch -
-                SmackDown - 12 de Enero de 2024
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=aRotiaN2yiI"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/47.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">12 ENERO 2024</p>
+                <h3>
+                  Lucha vs Holland (Lucha Clasificatoria para el Royal Rumble)
+                </h3>
+                <p>
+                  Miguel Ledezma c/Liv Morgan vs Ridge Holland c/Sheamus y Butch -
+                  SmackDown - 12 de Enero de 2024
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=cqGsACXOgSM"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/48.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">19 ENERO 2024</p>
-              <h3>Lucha vs Carlito (Emboscada de CM Punk)</h3>
-              <p>Miguel Ledezma vs Carlito - SmackDown - 19 de Enero de 2024</p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=cqGsACXOgSM"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/48.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">19 ENERO 2024</p>
+                <h3>Lucha vs Carlito (Emboscada de CM Punk)</h3>
+                <p>Miguel Ledezma vs Carlito - SmackDown - 19 de Enero de 2024</p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=JzDov1GHx7c"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/49.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">26 ENERO 2024</p>
-              <h3>Lucha Mixta vs Punk y Jade (Emboscada de CM Punk)</h3>
-              <p>
-                Miguel Ledezma y Liv Morgan vs CM Punk y Cora Jade - SmackDown -
-                26 de Enero de 2024
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=JzDov1GHx7c"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/49.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">26 ENERO 2024</p>
+                <h3>Lucha Mixta vs Punk y Jade (Emboscada de CM Punk)</h3>
+                <p>
+                  Miguel Ledezma y Liv Morgan vs CM Punk y Cora Jade - SmackDown -
+                  26 de Enero de 2024
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=IkiVIJnuhv8"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/50.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
-            </div>
-            <div class="video-card__body">
-              <p class="video-card__year">28 ENERO 2024</p>
-              <h3>Lucha por el titulo de USA (Royal Rumble)</h3>
-              <p>
-                Miguel Ledezma vs CM Punk por el titulo de USA - Royal Rumble -
-                28 de Enero de 2024
-              </p>
-            </div>
-          </article>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=IkiVIJnuhv8"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/50.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">28 ENERO 2024</p>
+                <h3>Lucha por el titulo de USA (Royal Rumble)</h3>
+                <p>
+                  Miguel Ledezma vs CM Punk por el titulo de USA - Royal Rumble -
+                  28 de Enero de 2024
+                </p>
+              </div>
+            </article>
 
-          <article class="video-card">
-            <div class="video-card__media">
-              <button
-                type="button"
-                class="video-thumb"
-                data-yt-url="https://www.youtube.com/watch?v=VIDEO_ID_51"
-                aria-label="Reproducir video"
-              >
-                <img src="Imagenes/51.png" alt="" />
-                <span class="video-thumb__play" aria-hidden="true">▶</span>
-              </button>
+            <article class="video-card">
+              <div class="video-card__media">
+                <button
+                  type="button"
+                  class="video-thumb"
+                  data-yt-url="https://www.youtube.com/watch?v=VIDEO_ID_51"
+                  aria-label="Reproducir video"
+                >
+                  <img src="Imagenes/51.png" alt="" />
+                  <span class="video-thumb__play" aria-hidden="true">▶</span>
+                </button>
+              </div>
+              <div class="video-card__body">
+                <p class="video-card__year">28 ENERO 2024</p>
+                <h3>Royal Rumble Match</h3>
+                <p>
+                  Batalla Real de 30 Hombres - Royal Rumble - 28 de Enero de 2024
+                </p>
+              </div>
+            </article>
+              </div>
             </div>
-            <div class="video-card__body">
-              <p class="video-card__year">28 ENERO 2024</p>
-              <h3>Royal Rumble Match</h3>
-              <p>
-                Batalla Real de 30 Hombres - Royal Rumble - 28 de Enero de 2024
-              </p>
-            </div>
-          </article>
+          </details>
         </div>
       </div>
     </section>
